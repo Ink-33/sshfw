@@ -111,10 +111,11 @@ make check
 make test-race
 ```
 
-CI (`.github/workflows/ci.yml`) runs `gofmt`, `go vet`, `go test` on Linux/Windows/macOS and cross-builds release archives.
+CI (`.github/workflows/ci.yml`) runs `gofmt`, `go vet`, `go test` (with `-race`), and a Linux build on every push.
 
 Working notes under `.ai/` are local-only and gitignored.
 
 ## License
 
-See repository license file if present; otherwise all rights reserved by the author until a license is added.
+[MIT](LICENSE) © 2026 Ink33
+

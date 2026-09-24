@@ -1,0 +1,18 @@
+# Normalize line endings so gofmt and CI agree across platforms.
+* text=auto eol=lf
+
+*.go   text eol=lf
+*.mod  text eol=lf
+*.sum  text eol=lf
+*.md   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+Makefile text eol=lf
+LICENSE  text eol=lf
+.gitignore text eol=lf
+
+*.png  binary
+*.jpg  binary
+*.pdf  binary
+*.zip  binary
+*.gz   binary

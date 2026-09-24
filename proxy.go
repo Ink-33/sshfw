@@ -255,9 +255,8 @@ func forwardChannel(incoming ssh.NewChannel, out ssh.Conn) {
 		_ = other.Close()
 		return
 	}
-	currentRequestsDone := make(chan struct{})
 	otherRequestsDone := make(chan struct{})
-	go func() { forwardChannelRequests(currentReqs, other); close(currentRequestsDone) }()
+	go func() { forwardChannelRequests(currentReqs, other) }()
 	go func() { forwardChannelRequests(otherReqs, current); close(otherRequestsDone) }()
 
 	var once sync.Once
@@ -274,16 +273,16 @@ func forwardChannel(incoming ssh.NewChannel, out ssh.Conn) {
 		copyChannel(other, current)
 		_ = other.CloseWrite()
 	}()
-	// Upstream -> local. Data EOF happens first after logout; EXIT_STATUS may
-	// still follow, so relay requests briefly, then tear down so the session
-	// cannot hang with the local client waiting forever.
+	// Upstream -> local. Data EOF happens first after a command exits.
+	// EXIT_STATUS is sent after EOF, so wait for request relay before
+	// CloseWrite/Close — otherwise the client sees EOF instead of an exit code.
 	go func() {
 		copyChannel(current, other)
 		select {
 		case <-otherRequestsDone:
-		case <-currentRequestsDone:
-		case <-time.After(5 * time.Second):
+		case <-time.After(2 * time.Second):
 		}
+		_ = current.CloseWrite()
 		closeBoth()
 	}()
 }
@@ -312,5 +311,4 @@ func copyChannel(dst, src ssh.Channel) {
 		_, _ = io.Copy(dst.Stderr(), src.Stderr())
 	}()
 	wg.Wait()
-	_ = dst.CloseWrite()
 }
