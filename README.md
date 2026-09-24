@@ -111,7 +111,7 @@ make check
 make test-race
 ```
 
-CI (`.github/workflows/ci.yml`) runs `gofmt`, `go vet`, `go test` (with `-race`), and a Linux build on every push.
+CI (`.github/workflows/ci.yml`) runs `make vet` / `make test` / `make test-race` and `make build-all` (Windows, Linux, macOS). Triggers on push, pull request, release, and manual dispatch. Release events attach the three `dist/*.tar.gz` archives to the GitHub release.
 
 Working notes under `.ai/` are local-only and gitignored.
 
