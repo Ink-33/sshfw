@@ -1,0 +1,33 @@
+# Binaries and build output
+/dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# AI / working notes (not for publication)
+/.ai/
+
+# Editor and OS noise
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local secrets and runtime state (never commit)
+sshfw.json
+*_host_key
+*_host_key.pub
+known_hosts
+known_hosts.local
+users/
+authorized_keys
+id_*
+*.pem
+*.key
+.env
+.env.*
